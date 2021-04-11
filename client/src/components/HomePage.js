@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
-const App = () => {
+const HomePage = () => {
   return (
     <div>
-      <H1>HELLO WORLD</H1>
+      <H1>HomePage</H1>
     </div>
   );
 };
@@ -14,4 +14,4 @@ const H1 = styled.h1`
   color: red;
 `;
 
-export default App;
+export default HomePage;
