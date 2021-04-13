@@ -6,7 +6,7 @@ import { BiUserCircle, FaUserCircle } from "react-icons/all";
 const Header = () => {
   return (
     <Nav>
-      <h1>Montréal</h1>
+      {/* <h1>Montréal</h1> */}
       <Wrapper>
         <Links>
           <NavLinkTo exact to="/">

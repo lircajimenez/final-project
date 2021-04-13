@@ -52,6 +52,9 @@ export default createGlobalStyle`
         content: '';
         content: none;
     }
+    html {
+        background: black;
+    }
     /* h1, h2, h3 {
       color: var(--primary-color);
       font-family: var(--heading-font-family);
