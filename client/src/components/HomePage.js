@@ -1,19 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { Image } from "cloudinary-react";
 
 import banner from "../assets/images/montreal/marc-olivier-jodoin-qIoF5XHs_Cs-unsplash.jpg";
-import img1 from "../assets/images/montreal/stade_olympique.jpeg";
-import img2 from "../assets/images/montreal/j-photos-fmykTY9UDt8-unsplash.jpg";
-import img3 from "../assets/images/montreal/david-samacoits-etchegoin-4cx2jhLjgPA-unsplash.jpg";
-import img4 from "../assets/images/montreal/galaad-linosfil-mxH416bGjgg-unsplash.jpg";
-import img5 from "../assets/images/montreal/will-burbano-sCu4Fe66BD4-unsplash.jpg";
-import img6 from "../assets/images/montreal/the-bialons-x_CEJ7kn4w4-unsplash.jpg";
-import img7 from "../assets/images/montreal/montreal-oratory-st-joseph-oratoire-leo-gonzales-56a63eed5f9b58b7d0e0a7bc.jpeg";
-import img8 from "../assets/images/montreal/etienne-delorieux-p7yLcNPDSaU-unsplash.jpg";
-import img9 from "../assets/images/montreal/pierre-jarry-yYmhiZxihZU-unsplash.jpg";
-import img10 from "../assets/images/montreal/eva-blue-1xgnRBvF_UI-unsplash.jpg";
 
 const HomePage = () => {
+  const [images, setImages] = useState();
+
+  const loadImages = async () => {
+    try {
+      const res = await fetch("/montreal");
+      const data = await res.json();
+      setImages(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    loadImages();
+  }, []);
+
   return (
     <>
       <Banner>
@@ -38,19 +45,16 @@ const HomePage = () => {
         </p>
       </Container>
       <Gallery>
-        <div className="img-3"></div>
-        <div className="img-5"></div>
-        <div className="img-6"></div>
-        <div className="img-7"></div>
-        <div className="img-8"></div>
-        <div className="img-1"></div>
-        <div className="img-2"></div>
-        {/* <div className="img-3"></div> */}
-        <div className="img-4"></div>
-        {/* <div className="img-5"></div>
-        <div className="img-6"></div> */}
-        <div className="img-9"></div>
-        <div className="img-10"></div>
+        {images &&
+          images.map((image, index) => (
+            <Image
+              key={index}
+              cloudName="dec2frnoe"
+              publicId={image}
+              width="300"
+              crop="scale"
+            />
+          ))}
       </Gallery>
     </>
   );
@@ -86,48 +90,7 @@ const Gallery = styled.div`
   padding: 20px;
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   /* grid-template-rows: auto; */
-
-  div {
-    /* width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block; */
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-  }
-
-  .img-1 {
-    background-image: url(${img1});
-  }
-  .img-2 {
-    background-image: url(${img2});
-  }
-  .img-3 {
-    background-image: url(${img3});
-  }
-  .img-4 {
-    background-image: url(${img4});
-  }
-  .img-5 {
-    background-image: url(${img5});
-  }
-  .img-6 {
-    background-image: url(${img6});
-  }
-  .img-7 {
-    background-image: url(${img7});
-  }
-  .img-8 {
-    background-image: url(${img8});
-  }
-  .img-9 {
-    background-image: url(${img9});
-  }
-  .img-10 {
-    background-image: url(${img10});
-  }
 `;
 export default HomePage;
