@@ -6,6 +6,12 @@ const morgan = require("morgan");
 const { cloudinary } = require("./utils/cloudinary");
 require("dotenv").config();
 
+const {
+  getBarcelona,
+  getTokyo,
+  getToronto,
+} = require("./handlers/cityHandlers");
+
 const PORT = 4000;
 
 // general setup
@@ -41,5 +47,10 @@ express()
     const publicIds = resources.map((file) => file.public_id);
     res.send(publicIds);
   })
+
+  // endpoints for cities
+  .get("/barcelona", getBarcelona)
+  .get("/tokyo", getTokyo)
+  .get("/toronto", getToronto)
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));

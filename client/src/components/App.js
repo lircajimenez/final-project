@@ -5,10 +5,10 @@ import styled from "styled-components";
 import GlobalStyles from "./GlobalStyles";
 import Landing from "./Landing";
 import Header from "./Header";
-import HomePage from "./HomePage";
-import Downtown from "./neighbourhoods/Downtown";
-import MontRoyal from "./neighbourhoods/MontRoyal";
-import OldMontreal from "./neighbourhoods/OldMontreal";
+import Montreal from "./Montreal";
+import Barcelona from "./cities/Barcelona";
+import Tokyo from "./cities/Tokyo";
+import Toronto from "./cities/Toronto";
 
 const App = () => {
   return (
@@ -21,17 +21,17 @@ const App = () => {
           </Route>
           <div>
             <Header />
-            <Route exact path="/home">
-              <HomePage />
+            <Route exact path="/montreal">
+              <Montreal />
             </Route>
-            <Route exact path="/downtown">
-              <Downtown />
+            <Route exact path="/barcelona">
+              <Barcelona />
             </Route>
-            <Route exact path="/mont-royal">
-              <MontRoyal />
+            <Route exact path="/tokyo">
+              <Tokyo />
             </Route>
-            <Route exact path="/old-montreal">
-              <OldMontreal />
+            <Route exact path="/toronto">
+              <Toronto />
             </Route>
           </div>
         </Switch>
