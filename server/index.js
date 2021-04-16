@@ -10,6 +10,9 @@ const {
   getBarcelona,
   getTokyo,
   getToronto,
+  postBarcelona,
+  postTokyo,
+  postToronto,
 } = require("./handlers/cityHandlers");
 
 const PORT = 4000;
@@ -29,9 +32,13 @@ express()
   })
   .use(morgan("tiny"))
   .use(express.static("./server/assets"))
-  .use(bodyParser.json())
-  .use(express.urlencoded({ extended: false }))
+  //.use(bodyParser.json())
   .use("/", express.static(__dirname + "/"))
+  //.use(express.urlencoded({ extended: false }))
+
+  //allows data from forms
+  .use(express.urlencoded({ extended: true, limit: "50mb" }))
+  .use(express.json({ limit: "50mb" }))
 
   // endpoint for testing
   .get("/bacon", (req, res) => res.status(200).json("🥓"))
@@ -41,16 +48,38 @@ express()
     const { resources } = await cloudinary.search
       .expression("folder:montreal")
       .sort_by("public_id", "desc")
-      .max_results(10)
+      .max_results(15)
       .execute();
 
     const publicIds = resources.map((file) => file.public_id);
     res.send(publicIds);
   })
 
-  // endpoints for cities
+  // endpoints to get images by city
   .get("/barcelona", getBarcelona)
   .get("/tokyo", getTokyo)
   .get("/toronto", getToronto)
+
+  // endpoints to post images by city
+  .post("/barcelona", postBarcelona)
+  .post("/tokyo", postTokyo)
+  .post("/toronto", postToronto)
+
+  .post("/upload", async (req, res) => {
+    try {
+      const imageString = req.body.data;
+      //console.log("img-str", imageString);
+
+      const uploadResponse = await cloudinary.uploader.upload(imageString, {
+        upload_preset: "upload_images",
+        tags: "toronto",
+      });
+      console.log("upload response", uploadResponse);
+      res.json({ message: "Successfully uploaded" });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ err: "Something went wrong" });
+    }
+  })
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));

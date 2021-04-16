@@ -5,10 +5,11 @@ import styled from "styled-components";
 import GlobalStyles from "./GlobalStyles";
 import Landing from "./Landing";
 import Header from "./Header";
-import Montreal from "./Montreal";
+import Montreal from "./cities/Montreal";
 import Barcelona from "./cities/Barcelona";
 import Tokyo from "./cities/Tokyo";
 import Toronto from "./cities/Toronto";
+import Upload from "./Upload";
 
 const App = () => {
   return (
@@ -32,6 +33,9 @@ const App = () => {
             </Route>
             <Route exact path="/toronto">
               <Toronto />
+            </Route>
+            <Route exact path="/upload">
+              <Upload />
             </Route>
           </div>
         </Switch>

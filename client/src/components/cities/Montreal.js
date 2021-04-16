@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Image } from "cloudinary-react";
 
-import banner from "../assets/banners/montreal.jpg";
+import banner from "../../assets/banners/montreal.jpg";
 
 const Montreal = () => {
   const [images, setImages] = useState();
