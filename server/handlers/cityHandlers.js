@@ -31,4 +31,61 @@ const getToronto = async (req, res) => {
   res.send(publicIds);
 };
 
-module.exports = { getBarcelona, getTokyo, getToronto };
+const postBarcelona = async (req, res) => {
+  try {
+    const imageString = req.body.data;
+    //console.log("img-str", imageString);
+
+    const uploadResponse = await cloudinary.uploader.upload(imageString, {
+      upload_preset: "upload_images",
+      tags: "barcelona",
+    });
+    //console.log("upload response", uploadResponse);
+    res.status(201).json({ status: 201, message: "Successfully uploaded" });
+  } catch (err) {
+    res.status(500).json({ status: 500, err: "Something went wrong" });
+  }
+};
+
+const postTokyo = async (req, res) => {
+  try {
+    const imageString = req.body.data;
+    const uploadResponse = await cloudinary.uploader.upload(imageString, {
+      upload_preset: "upload_images",
+      tags: "tokyo",
+    });
+    console.log(uploadResponse);
+    res
+      .status(201)
+      .json({
+        status: 201,
+        message: "Successfully uploaded",
+        public_id: uploadResponse.public_id,
+      });
+  } catch (err) {
+    res.status(500).json({ status: 500, err: "Something went wrong" });
+  }
+};
+
+const postToronto = async (req, res) => {
+  try {
+    const imageString = req.body.data;
+    const uploadResponse = await cloudinary.uploader.upload(imageString, {
+      upload_preset: "upload_images",
+      tags: "toronto",
+    });
+    res.status(201).json({ status: 201, message: "Successfully uploaded" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ status: 500, err: "Something went wrong" });
+  }
+};
+
+module.exports = {
+  getBarcelona,
+  getTokyo,
+  getToronto,
+  postBarcelona,
+  postTokyo,
+  postToronto,
+};
