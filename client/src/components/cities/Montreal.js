@@ -1,25 +1,41 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Image } from "cloudinary-react";
-
+import ImageForm from "./ImageForm";
 import banner from "../../assets/banners/montreal.jpg";
 
 const Montreal = () => {
   const [images, setImages] = useState();
-
-  const loadImages = async () => {
-    try {
-      const res = await fetch("/montreal");
-      const data = await res.json();
-      setImages(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const [imageInput, setImageInput] = useState("");
+  const [selectedImage, setSelectedImage] = useState("");
 
   useEffect(() => {
-    loadImages();
+    fetch("/montreal")
+      .then((res) => res.json())
+      .then((data) => {
+        setImages(data);
+      });
   }, []);
+
+  const uploadImage = (base64EncodedImage) => {
+    fetch("/montreal", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ data: base64EncodedImage }),
+    })
+      .then((res) => {
+        //console.log("inside res", res);
+        return res.json();
+      })
+      .then((data) => {
+        //console.log("inside fetch", data);
+        setImages([data.public_id, ...images]);
+      });
+    setImageInput("");
+  };
 
   return (
     <>
@@ -43,6 +59,13 @@ const Montreal = () => {
           the neighbor's dog and make it bark or sleep on keyboard. Chew the
           plant check cat door for ambush 10 times before coming in.
         </p>
+        <ImageForm
+          selectedImage={selectedImage}
+          setSelectedImage={setSelectedImage}
+          imageInput={imageInput}
+          setImageInput={setImageInput}
+          uploadImage={uploadImage}
+        />
       </Container>
       <Gallery>
         {images &&
@@ -52,7 +75,6 @@ const Montreal = () => {
               cloudName="dec2frnoe"
               publicId={image}
               width="300"
-              crop="scale"
             />
           ))}
       </Gallery>

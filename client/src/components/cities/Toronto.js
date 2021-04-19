@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Image } from "cloudinary-react";
-
+import ImageForm from "./ImageForm";
 import banner from "../../assets/banners/toronto.jpg";
 
 const Toronto = () => {
   const [images, setImages] = useState();
+  const [imageInput, setImageInput] = useState("");
+  const [selectedImage, setSelectedImage] = useState("");
 
   useEffect(() => {
     fetch("/toronto")
@@ -14,6 +16,44 @@ const Toronto = () => {
         setImages(data);
       });
   }, []);
+
+  // const handleImageInput = (ev) => {
+  //   const file = ev.target.files[0];
+  //   setSelecetedImage(file);
+  //   setImageInput(ev.target.value);
+  // };
+
+  // const handleSubmit = (ev) => {
+  //   ev.preventDefault();
+  //   if (!selectedImage) return;
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(selectedImage);
+  //   reader.onloadend = () => {
+  //     uploadImage(reader.result);
+  //   };
+  //   reader.onerror = () => {
+  //     console.error("error");
+  //     // setError("Try again");
+  //   };
+  // };
+
+  const uploadImage = (base64EncodedImage) => {
+    fetch("/toronto", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ data: base64EncodedImage }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setImages([data.public_id, ...images]);
+      });
+    setImageInput("");
+  };
 
   return (
     <>
@@ -37,6 +77,15 @@ const Toronto = () => {
           the neighbor's dog and make it bark or sleep on keyboard. Chew the
           plant check cat door for ambush 10 times before coming in.
         </p>
+        <ImageForm
+          selectedImage={selectedImage}
+          setSelectedImage={setSelectedImage}
+          imageInput={imageInput}
+          setImageInput={setImageInput}
+          uploadImage={uploadImage}
+          // handleSubmit={handleSubmit}
+          // handleImageInput={handleImageInput}
+        />
       </Container>
       <Gallery>
         {images &&

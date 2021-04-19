@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Image } from "cloudinary-react";
-
+import ImageForm from "./ImageForm";
 import banner from "../../assets/banners/barcelona.jpg";
 
 const Barcelona = () => {
+  //state for loading images
   const [images, setImages] = useState();
+  //state for uploading images
+  const [imageInput, setImageInput] = useState("");
+  const [selectedImage, setSelectedImage] = useState("");
 
+  // fetching images
   useEffect(() => {
     fetch("/barcelona")
       .then((res) => res.json())
@@ -14,6 +19,53 @@ const Barcelona = () => {
         setImages(data);
       });
   }, []);
+
+  // uploading images
+  //   const handleImageInput = (ev) => {
+  //     const file = ev.target.files[0];
+  //     setSelectedImage(file);
+  //     setImageInput(ev.target.value);
+  //   };
+
+  //   const handleSubmit = (ev) => {
+  //     ev.preventDefault();
+  //     if (!selectedImage) return;
+  //     //allows web apps to read file contents
+  //     const reader = new FileReader();
+  //     //convert image into an url
+  //     reader.readAsDataURL(selectedImage);
+  //     //triggers when the reading operation is done
+  //     reader.onloadend = () => {
+  //       uploadImage(reader.result);
+  //     };
+  //     reader.onerror = () => {
+  //       console.error("error");
+  //       // setError("Try again");
+  //     };
+  //   };
+
+  //base64EncodedImage string representation of the image
+  const uploadImage = (base64EncodedImage) => {
+    //console.log("encoded string", base64EncodedImage);
+    fetch("/barcelona", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ data: base64EncodedImage }),
+    })
+      .then((res) => {
+        //console.log("inside res", res);
+        return res.json();
+      })
+      .then((data) => {
+        //console.log("inside fetch", data);
+        // setRefetch(!refetch);
+        setImages([data.public_id, ...images]);
+      });
+    setImageInput("");
+  };
 
   return (
     <>
@@ -37,6 +89,15 @@ const Barcelona = () => {
           the neighbor's dog and make it bark or sleep on keyboard. Chew the
           plant check cat door for ambush 10 times before coming in.
         </p>
+        <ImageForm
+          selectedImage={selectedImage}
+          setSelectedImage={setSelectedImage}
+          imageInput={imageInput}
+          setImageInput={setImageInput}
+          uploadImage={uploadImage}
+          //   handleSubmit={handleSubmit}
+          //   handleImageInput={handleImageInput}
+        />
       </Container>
       <Gallery>
         {images &&
