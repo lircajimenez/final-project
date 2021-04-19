@@ -9,7 +9,7 @@ import Montreal from "./cities/Montreal";
 import Barcelona from "./cities/Barcelona";
 import Tokyo from "./cities/Tokyo";
 import Toronto from "./cities/Toronto";
-import Upload from "./Upload";
+// import Upload from "./cities/Upload";
 
 const App = () => {
   return (
@@ -34,9 +34,9 @@ const App = () => {
             <Route exact path="/toronto">
               <Toronto />
             </Route>
-            <Route exact path="/upload">
+            {/* <Route exact path="/upload">
               <Upload />
-            </Route>
+            </Route> */}
           </div>
         </Switch>
       </BrowserRouter>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Image } from "cloudinary-react";
-
+import ImageForm from "./ImageForm";
 import banner from "../../assets/banners/tokyo.jpg";
 
 const Tokyo = () => {
@@ -9,42 +9,42 @@ const Tokyo = () => {
   const [images, setImages] = useState();
   //state for uploading images
   const [imageInput, setImageInput] = useState("");
-  const [selectedImage, setSelecetedImage] = useState("");
+  const [selectedImage, setSelectedImage] = useState("");
   const [refetch, setRefetch] = useState(true);
 
-  // fetching images
+  //fetching images
   useEffect(() => {
-    console.log("refetch in useEffect ", refetch);
     fetch("/tokyo")
       .then((res) => res.json())
       .then((data) => {
-        console.log("inside use effect", refetch, data);
+        //console.log("inside use effect", refetch, data);
         setImages(data);
       });
-  }, [refetch]);
+  }, []);
 
-  // uploading images
-  const handleImageInput = (ev) => {
-    const file = ev.target.files[0];
-    setSelecetedImage(file);
-    setImageInput(ev.target.value);
-  };
+  // // uploading images
+  // const handleImageInput = (ev) => {
+  //   const file = ev.target.files[0];
+  //   setSelectedImage(file);
+  //   setImageInput(ev.target.value);
+  // };
 
-  const handleSubmit = (ev) => {
-    ev.preventDefault();
-    if (!selectedImage) return;
-    //allows web apps to read file contents
-    const reader = new FileReader();
-    //convert image into an url
-    reader.readAsDataURL(selectedImage);
-    //triggers when the reading operation is done
-    reader.onloadend = () => {
-      uploadImage(reader.result);
-    };
-    reader.onerror = () => {
-      console.error("error");
-    };
-  };
+  // const handleSubmit = (ev) => {
+  //   ev.preventDefault();
+  //   if (!selectedImage) return;
+  //   //allows web apps to read file contents
+  //   const reader = new FileReader();
+  //   //convert image into an url
+  //   reader.readAsDataURL(selectedImage);
+  //   //triggers when the reading operation is done
+  //   reader.onloadend = () => {
+  //     uploadImage(reader.result);
+  //   };
+  //   reader.onerror = () => {
+  //     console.error("error");
+  //     // setError("Try again");
+  //   };
+  // };
   //base64EncodedImage string representation of the image
   const uploadImage = (base64EncodedImage) => {
     //console.log("encoded string", base64EncodedImage);
@@ -90,7 +90,7 @@ const Tokyo = () => {
           the neighbor's dog and make it bark or sleep on keyboard. Chew the
           plant check cat door for ambush 10 times before coming in.
         </p>
-        <h2>Upload your image</h2>
+        {/* <h2>Upload your image</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="file"
@@ -99,7 +99,14 @@ const Tokyo = () => {
             value={imageInput}
           />
           <button type="submit">Submit</button>
-        </form>
+        </form> */}
+        <ImageForm
+          selectedImage={selectedImage}
+          setSelectedImage={setSelectedImage}
+          imageInput={imageInput}
+          setImageInput={setImageInput}
+          uploadImage={uploadImage}
+        />
       </Container>
       <Gallery>
         {console.log("images", images)}
