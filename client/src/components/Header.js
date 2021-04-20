@@ -1,28 +1,41 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
-import { BiUserCircle, FaUserCircle } from "react-icons/all";
+import { NavLink, useHistory } from "react-router-dom";
+import { FaUserCircle } from "react-icons/all";
+import { UserContext } from "./UserContext";
 
 const Header = () => {
+  const { userSigned, setUserSigned, currentUser, setCurrentUser } = useContext(
+    UserContext
+  );
+  const history = useHistory();
+
+  const signOut = () => {
+    setUserSigned(false);
+    setCurrentUser("");
+    history.push("/");
+  };
+  console.log("********", currentUser);
   return (
     <Nav>
-      {/* <h1>Montréal</h1> */}
+      {/* <h1>wandergram</h1> */}
       <Wrapper>
         <Links>
           <NavLinkTo exact to="/">
-            About
-          </NavLinkTo>
-          <NavLinkTo exact to="/">
-            Explore
-          </NavLinkTo>
-          <NavLinkTo exact to="/">
-            Stories
+            Explore more cities
           </NavLinkTo>
         </Links>
-        <SignIn exact to="/">
-          <FaUserCircle />
-          My account
-        </SignIn>
+        {userSigned ? (
+          <div>
+            <span>hello, {currentUser !== {} && currentUser}</span>
+            <button onClick={signOut}>Sign Out</button>
+          </div>
+        ) : (
+          <SignIn exact to="/login">
+            <FaUserCircle />
+            My account
+          </SignIn>
+        )}
       </Wrapper>
     </Nav>
   );
@@ -42,16 +55,16 @@ const Nav = styled.nav`
 `;
 const Wrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   color: white;
   width: 100%;
 `;
 const Links = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   width: 280px;
-  margin-left: 25px;
+  margin-right: 25px;
   /* border: 1px solid red; */
 `;
 const NavLinkTo = styled(NavLink)`
