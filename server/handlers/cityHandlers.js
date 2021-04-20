@@ -50,11 +50,12 @@ const postBarcelona = async (req, res) => {
       upload_preset: "upload_images",
       tags: "barcelona",
     });
-    //console.log("upload response", uploadResponse);
+    console.log("upload response", uploadResponse);
     res.status(201).json({
       status: 201,
       message: "Successfully uploaded",
       public_id: uploadResponse.public_id,
+      url: uploadResponse.url,
     });
   } catch (err) {
     res.status(500).json({ status: 500, err: "Something went wrong" });
@@ -73,6 +74,7 @@ const postMontreal = async (req, res) => {
       status: 201,
       message: "Successfully uploaded",
       public_id: uploadResponse.public_id,
+      url: uploadResponse.url,
     });
   } catch (err) {
     res.status(500).json({ status: 500, err: "Something went wrong" });
@@ -91,6 +93,7 @@ const postTokyo = async (req, res) => {
       status: 201,
       message: "Successfully uploaded",
       public_id: uploadResponse.public_id,
+      url: uploadResponse.url,
     });
   } catch (err) {
     res.status(500).json({ status: 500, err: "Something went wrong" });
@@ -108,6 +111,7 @@ const postToronto = async (req, res) => {
       status: 201,
       message: "Successfully uploaded",
       public_id: uploadResponse.public_id,
+      url: uploadResponse.url,
     });
   } catch (err) {
     res.status(500).json({ status: 500, err: "Something went wrong" });

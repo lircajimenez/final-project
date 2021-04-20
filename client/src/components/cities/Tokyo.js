@@ -10,7 +10,7 @@ const Tokyo = () => {
   //state for uploading images
   const [imageInput, setImageInput] = useState("");
   const [selectedImage, setSelectedImage] = useState("");
-  const [refetch, setRefetch] = useState(true);
+  // const [refetch, setRefetch] = useState(true);
 
   //fetching images
   useEffect(() => {

@@ -6,6 +6,7 @@ const morgan = require("morgan");
 const { cloudinary } = require("./utils/cloudinary");
 require("dotenv").config();
 
+const { signUp, logIn } = require("./handlers/userHandler");
 const {
   getBarcelona,
   getMontreal,
@@ -56,6 +57,10 @@ express()
   //   const publicIds = resources.map((file) => file.public_id);
   //   res.send(publicIds);
   // })
+
+  // endpoint for user sign-up
+  .post("/signup", signUp)
+  .post("/login", logIn)
 
   // endpoints to get images by city
   .get("/barcelona", getBarcelona)
