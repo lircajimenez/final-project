@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Image } from "cloudinary-react";
 import ImageForm from "./ImageForm";
 import banner from "../../assets/banners/montreal.jpg";
+import MontrealMap from "../maps/MapMontreal";
 
 const Montreal = () => {
   const [images, setImages] = useState();
@@ -27,11 +28,11 @@ const Montreal = () => {
       body: JSON.stringify({ data: base64EncodedImage }),
     })
       .then((res) => {
-        //console.log("inside res", res);
+        console.log("inside res", res);
         return res.json();
       })
       .then((data) => {
-        //console.log("inside fetch", data);
+        console.log("inside fetch", data);
         setImages([data.public_id, ...images]);
       });
     setImageInput("");
@@ -43,6 +44,7 @@ const Montreal = () => {
         <H1>Montréal</H1>
       </Banner>
       <Container>
+        <MontrealMap />
         <p>
           I love cats i am one wake up scratch humans leg for food then purr
           then i have a and relax run up and down stairs so scratch the box

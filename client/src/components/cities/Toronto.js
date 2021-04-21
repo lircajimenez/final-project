@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Image } from "cloudinary-react";
 import ImageForm from "./ImageForm";
 import banner from "../../assets/banners/toronto.jpg";
+import MapToronto from "../maps/MapToronto";
 
 const Toronto = () => {
   const [images, setImages] = useState();
@@ -61,6 +62,7 @@ const Toronto = () => {
         <H1>Toronto</H1>
       </Banner>
       <Container>
+        <MapToronto />
         <p>
           I love cats i am one wake up scratch humans leg for food then purr
           then i have a and relax run up and down stairs so scratch the box

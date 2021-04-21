@@ -26,7 +26,7 @@ const getTokyo = async (req, res) => {
     .expression("folder:cities_images && tags:tokyo")
     .max_results(30)
     .execute();
-
+  console.log("******", resources);
   const publicIds = resources.map((file) => file.public_id);
   res.send(publicIds);
 };

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Image } from "cloudinary-react";
 import ImageForm from "./ImageForm";
 import banner from "../../assets/banners/tokyo.jpg";
+import MapTokyo from "../maps/MapTokyo";
 
 const Tokyo = () => {
   //state for loading images
@@ -74,6 +75,7 @@ const Tokyo = () => {
         <H1>Tokyo</H1>
       </Banner>
       <Container>
+        <MapTokyo />
         <p>
           I love cats i am one wake up scratch humans leg for food then purr
           then i have a and relax run up and down stairs so scratch the box
