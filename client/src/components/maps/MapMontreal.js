@@ -4,8 +4,8 @@ import MapStyles from "./MapStyles";
 
 const libraries = ["places"];
 const mapContainerStyle = {
-  width: "90vw",
-  height: "90vh",
+  width: "50vw",
+  height: "50vh",
 };
 const options = {
   styles: MapStyles,

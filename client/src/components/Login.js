@@ -1,8 +1,11 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { Link, useHistory } from "react-router-dom";
+import { motion } from "framer-motion";
 import Input from "./signup/Input";
 import { UserContext } from "./UserContext";
+import human from "../assets/illustrations/Humaaans - Space.png";
+import "./styles.css";
 
 const LogIn = () => {
   const { setCurrentUser, setUserSigned, currentUser } = useContext(
@@ -55,7 +58,8 @@ const LogIn = () => {
 
   return (
     <Wrapper>
-      <h1>Welcome back!</h1>
+      {/* <h1>Welcome back!</h1> */}
+      <img src={human} alt="Login illustration" />
       <Input
         name="username"
         placeholder="username"
@@ -72,9 +76,16 @@ const LogIn = () => {
         handleChange={handleChange}
         value={formData.password || ""}
       />
-      <button onClick={handleSubmit}>Submit</button>
-      {status === "error" && <div>{errorMessage}</div>}
-      <span>Not a user yet?</span>
+      {status === "error" && <div style={{ color: "red" }}>{errorMessage}</div>}
+      <motion.button
+        className="submit-btn"
+        whileHover={{ scale: 1.2 }}
+        whileTap={{ scale: 0.8 }}
+        onClick={handleSubmit}
+      >
+        Submit
+      </motion.button>
+      <Span>Not a user yet?</Span>
       <Link to="/signup">Create an account</Link>
     </Wrapper>
   );
@@ -86,8 +97,13 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   color: white;
-  height: 95vh;
+  height: 100%;
   line-height: 1.5;
+  margin-top: 40px;
+`;
+const Span = styled.span`
+  margin-top: 20px;
+  margin-bottom: 15px;
 `;
 
 export default LogIn;

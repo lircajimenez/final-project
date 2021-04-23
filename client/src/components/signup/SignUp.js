@@ -1,7 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { motion } from "framer-motion";
 import styled from "styled-components";
 import Input from "./Input";
+import human from "../../assets/illustrations/Chatting-small.png";
+import "../styles.css";
 
 const initialState = {
   username: "",
@@ -67,62 +70,97 @@ const SignUp = () => {
 
   return (
     <Wrapper>
-      <h1> Welcome to wandergram </h1>
-      <h2> Provide information to join! </h2>
-      <form>
-        <Input
-          refProp={username}
-          value={formData.username || ""}
-          type="text"
-          placeholder="username"
-          name="username"
-          required="required"
-          handleChange={handleChange}
-        />
-        <Input
-          refProp={email}
-          value={formData.email || ""}
-          type="text"
-          placeholder="email"
-          name="email"
-          required="required"
-          handleChange={handleChange}
-        />
-        <Input
-          refProp={password}
-          value={formData.password || ""}
-          type="password"
-          placeholder="password"
-          name="password"
-          required="required"
-          handleChange={handleChange}
-        />
-        <Input
-          refProp={confirmPassword}
-          value={formData.confirmPassword || ""}
-          type="password"
-          placeholder="confirm password"
-          name="confirmPassword"
-          required="required"
-          handleChange={handleChange}
-        />
-        <button disabled={disabled} onClick={handleSubmit}>
-          Submit
-        </button>
-      </form>
-      {/* <div ref={errorMessage} id="error" name="error"></div> */}
+      <img src={human} alt="Signup illustration" />
+      <Container>
+        <h1> Welcome to wandergram </h1>
+        <h2> Provide information to join! </h2>
+        <Form>
+          <Input
+            refProp={username}
+            value={formData.username || ""}
+            type="text"
+            placeholder="username"
+            name="username"
+            required="required"
+            handleChange={handleChange}
+          />
+          <Input
+            refProp={email}
+            value={formData.email || ""}
+            type="text"
+            placeholder="email"
+            name="email"
+            required="required"
+            handleChange={handleChange}
+          />
+          <Input
+            refProp={password}
+            value={formData.password || ""}
+            type="password"
+            placeholder="password"
+            name="password"
+            required="required"
+            handleChange={handleChange}
+          />
+          <Input
+            refProp={confirmPassword}
+            value={formData.confirmPassword || ""}
+            type="password"
+            placeholder="confirm password"
+            name="confirmPassword"
+            required="required"
+            handleChange={handleChange}
+          />
+          <motion.button
+            className="submit-btn"
+            disabled={disabled}
+            onClick={handleSubmit}
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.8 }}
+          >
+            Create account
+          </motion.button>
+        </Form>
+        {/* <div ref={errorMessage} id="error" name="error"></div> */}
+      </Container>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
   display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: space-evenly;
+  color: white;
+  height: 90vh;
+  line-height: 1.5;
+  /* border: 1px solid red; */
+`;
+const Container = styled.div`
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: white;
-  height: 100vh;
-  line-height: 1.5;
-`;
+  height: 600px;
+  width: 30%;
+  /* border: 1px solid red; */
 
+  h1 {
+    font-size: 2em;
+  }
+
+  h2 {
+    font-weight: 200;
+  }
+`;
+const Form = styled.form`
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-evenly;
+  width: 80%;
+  height: 200px;
+`;
 export default SignUp;

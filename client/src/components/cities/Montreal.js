@@ -1,19 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
+import { UserContext } from "../UserContext";
 import { Image } from "cloudinary-react";
+import { motion } from "framer-motion";
 import ImageForm from "./ImageForm";
-import banner from "../../assets/banners/montreal.jpg";
 import MontrealMap from "../maps/MapMontreal";
+import Modal from "./Modal";
+import banner from "../../assets/banners/montreal.jpg";
+import terrace from "../../assets/illustrations/Terrace.svg";
+import location from "../../assets/illustrations/LocationMap.svg";
 
 const Montreal = () => {
+  const { userSigned } = useContext(UserContext);
   const [images, setImages] = useState();
   const [imageInput, setImageInput] = useState("");
   const [selectedImage, setSelectedImage] = useState("");
+  const [previewImage, setPreviewImage] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const [modalImage, setModalImage] = useState(null);
 
   useEffect(() => {
     fetch("/montreal")
       .then((res) => res.json())
       .then((data) => {
+        // console.log("fetch montreal", data);
         setImages(data);
       });
   }, []);
@@ -28,12 +38,16 @@ const Montreal = () => {
       body: JSON.stringify({ data: base64EncodedImage }),
     })
       .then((res) => {
-        console.log("inside res", res);
+        // console.log("inside res", res);
         return res.json();
       })
       .then((data) => {
-        console.log("inside fetch", data);
-        setImages([data.public_id, ...images]);
+        // console.log("inside fetch", data);
+        setImages([data.url, ...images]);
+        if (data.status === 201) {
+          setSuccessMsg("Image uploaded successfully");
+          setPreviewImage("");
+        }
       });
     setImageInput("");
   };
@@ -43,43 +57,67 @@ const Montreal = () => {
       <Banner>
         <H1>Montréal</H1>
       </Banner>
-      <Container>
-        <MontrealMap />
-        <p>
-          I love cats i am one wake up scratch humans leg for food then purr
-          then i have a and relax run up and down stairs so scratch the box
-          catching very fast laser pointer so jump on counter removed by human
-          jump on counter again removed by human meow before jumping on counter
-          this time to let the human know am coming back i see a bird i stare at
-          it i meow at it i do a wiggle come here birdy for run in circles.
-          Burrow under covers munch, munch, chomp, chomp or i will be pet i will
-          be pet and then i will hiss but walk on keyboard so ask to go outside
-          and ask to come inside and ask to go outside and ask to come inside.
-          Kick up litter. Loved it, hated it, loved it, hated it hey! you there,
-          with the hands so climb a tree, wait for a fireman jump to fireman
-          then scratch his face prance along on top of the garden fence, annoy
-          the neighbor's dog and make it bark or sleep on keyboard. Chew the
-          plant check cat door for ambush 10 times before coming in.
-        </p>
-        <ImageForm
-          selectedImage={selectedImage}
-          setSelectedImage={setSelectedImage}
-          imageInput={imageInput}
-          setImageInput={setImageInput}
-          uploadImage={uploadImage}
-        />
-      </Container>
-      <Gallery>
-        {images &&
-          images.map((image, index) => (
-            <Image
-              key={index}
-              cloudName="dec2frnoe"
-              publicId={image}
-              width="300"
-            />
-          ))}
-      </Gallery>
+      <Wrapper>
+        <Container>
+          <Img src={terrace} alt="Terrace illustration" />
+          <Text>
+            <h2>About Montréal</h2>
+            <p>
+              Montreal, c’est si bon! This French-speaking city is considered
+              the cultural capital of Canada, and is a cosmopolitan celebration
+              of Québécois style. A horse-drawn carriage ride around the
+              cobblestone streets and grand buildings of Vieux-Montréal will
+              give you a taste of European flavor. The Basilique Notre-Dame is a
+              confection of stained glass, and the Plateau Mont-Royal district
+              will delight you with its quaint boutiques and cafés. Dig in to a
+              massive plate of poutine to fuel up for a tour of the epic Olympic
+              Park.{" "}
+            </p>
+          </Text>
+        </Container>
+        {userSigned ? (
+          <ImageForm
+            selectedImage={selectedImage}
+            setSelectedImage={setSelectedImage}
+            imageInput={imageInput}
+            setImageInput={setImageInput}
+            uploadImage={uploadImage}
+            successMsg={successMsg}
+            previewImage={previewImage}
+            setPreviewImage={setPreviewImage}
+          />
+        ) : (
+          <div style={{ color: "red" }}>Log-in to contribute</div>
+        )}
+        <motion.div layout>
+          {/* {console.log("images", images)} */}
+          {images &&
+            images.map((image, index) => (
+              <Image
+                key={index}
+                cloudName="dec2frnoe"
+                publicId={image}
+                width="350"
+                height="250"
+                onClick={() => setModalImage(image)}
+              />
+            ))}
+        </motion.div>
+        {modalImage && (
+          <Modal modalImage={modalImage} setModalImage={setModalImage} />
+        )}
+        <MapContainer>
+          <Div>
+            <h3>Want to go there?</h3>
+            <p>
+              Interact with the map to find the location of some of the
+              photographs.{" "}
+            </p>
+            <img src={location} alt="Map illustration" />
+          </Div>
+          <MontrealMap />
+        </MapContainer>
+      </Wrapper>
     </>
   );
 };
@@ -89,7 +127,7 @@ const Banner = styled.div`
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  height: 100vh;
+  height: 95vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -98,23 +136,94 @@ const H1 = styled.h1`
   color: white;
   font-size: 80px;
 `;
-const Container = styled.div`
+const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   /* height: 100vh; */
-  padding: 80px;
+  padding: 60px;
   text-align: center;
   color: white;
   font-size: 18px;
 `;
-const Gallery = styled.div`
-  height: 100vh;
-  padding: 20px;
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(4, 1fr);
-  /* grid-template-rows: auto; */
+const Container = styled.div`
+  display: flex;
+  /* align-items: center; */
+  justify-content: space-evenly;
+  height: 70vh;
+  /* border: 1px solid yellow; */
 `;
+const Img = styled.img`
+  width: 45%;
+`;
+const Text = styled.div`
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  line-height: 1.8;
+  overflow: auto;
+
+  h2 {
+    margin-top: 40px;
+    font-size: 2em;
+    letter-spacing: 0.2rem;
+  }
+
+  p {
+    text-align: left;
+    margin-top: 10px;
+    letter-spacing: 1.5px;
+    font-size: 0.9em;
+  }
+`;
+const MapContainer = styled.div`
+  display: flex;
+  /* border: 1px solid red; */
+  margin-top: 30px;
+  width: 100%;
+  height: 60vh;
+  align-items: center;
+  justify-content: space-evenly;
+`;
+const Div = styled.div`
+  /* border: 1px solid yellow; */
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  height: 80%;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.8;
+
+  h3 {
+    font-size: 1em;
+    letter-spacing: 0.1rem;
+    font-weight: 700;
+  }
+
+  p {
+    margin-top: 10px;
+    letter-spacing: 1.5px;
+    font-size: 0.6em;
+  }
+
+  img {
+    width: 50%;
+    margin-top: 15px;
+  }
+`;
+// const Gallery = styled.div`
+//   border: 1px solid red;
+//   height: 50vh;
+//   /* padding: 20px; */
+//   display: grid;
+//   gap: 1rem;
+//   /* grid-template-columns: 1fr 1fr 1fr; */
+//   /* grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); */
+//   grid-template-columns: repeat(4, 1fr);
+//   /* grid-template-rows: auto; */
+// `;
 export default Montreal;

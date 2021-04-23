@@ -1,17 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
+import { UserContext } from "../UserContext";
 import { Image } from "cloudinary-react";
 import ImageForm from "./ImageForm";
-import banner from "../../assets/banners/tokyo.jpg";
 import MapTokyo from "../maps/MapTokyo";
+import Modal from "./Modal";
+import banner from "../../assets/banners/tokyo.jpg";
+import ramen from "../../assets/illustrations/Ramen.svg";
+import location from "../../assets/illustrations/LocationMap.svg";
 
 const Tokyo = () => {
+  const { userSigned } = useContext(UserContext);
   //state for loading images
   const [images, setImages] = useState();
   //state for uploading images
   const [imageInput, setImageInput] = useState("");
   const [selectedImage, setSelectedImage] = useState("");
-  // const [refetch, setRefetch] = useState(true);
+  const [previewImage, setPreviewImage] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  //state for modal
+  const [modalImage, setModalImage] = useState(null);
 
   //fetching images
   useEffect(() => {
@@ -23,29 +31,6 @@ const Tokyo = () => {
       });
   }, []);
 
-  // // uploading images
-  // const handleImageInput = (ev) => {
-  //   const file = ev.target.files[0];
-  //   setSelectedImage(file);
-  //   setImageInput(ev.target.value);
-  // };
-
-  // const handleSubmit = (ev) => {
-  //   ev.preventDefault();
-  //   if (!selectedImage) return;
-  //   //allows web apps to read file contents
-  //   const reader = new FileReader();
-  //   //convert image into an url
-  //   reader.readAsDataURL(selectedImage);
-  //   //triggers when the reading operation is done
-  //   reader.onloadend = () => {
-  //     uploadImage(reader.result);
-  //   };
-  //   reader.onerror = () => {
-  //     console.error("error");
-  //     // setError("Try again");
-  //   };
-  // };
   //base64EncodedImage string representation of the image
   const uploadImage = (base64EncodedImage) => {
     //console.log("encoded string", base64EncodedImage);
@@ -64,7 +49,11 @@ const Tokyo = () => {
       .then((data) => {
         console.log("inside fetch", data);
         // setRefetch(!refetch);
-        setImages([data.public_id, ...images]);
+        setImages([data.url, ...images]);
+        if (data.status === 201) {
+          setSuccessMsg("Image uploaded successfully");
+          setPreviewImage("");
+        }
       });
     setImageInput("");
   };
@@ -74,54 +63,66 @@ const Tokyo = () => {
       <Banner>
         <H1>Tokyo</H1>
       </Banner>
-      <Container>
-        <MapTokyo />
-        <p>
-          I love cats i am one wake up scratch humans leg for food then purr
-          then i have a and relax run up and down stairs so scratch the box
-          catching very fast laser pointer so jump on counter removed by human
-          jump on counter again removed by human meow before jumping on counter
-          this time to let the human know am coming back i see a bird i stare at
-          it i meow at it i do a wiggle come here birdy for run in circles.
-          Burrow under covers munch, munch, chomp, chomp or i will be pet i will
-          be pet and then i will hiss but walk on keyboard so ask to go outside
-          and ask to come inside and ask to go outside and ask to come inside.
-          Kick up litter. Loved it, hated it, loved it, hated it hey! you there,
-          with the hands so climb a tree, wait for a fireman jump to fireman
-          then scratch his face prance along on top of the garden fence, annoy
-          the neighbor's dog and make it bark or sleep on keyboard. Chew the
-          plant check cat door for ambush 10 times before coming in.
-        </p>
-        {/* <h2>Upload your image</h2>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="file"
-            name="image"
-            onChange={(ev) => handleImageInput(ev)}
-            value={imageInput}
+      <Wrapper>
+        <Container>
+          <Img src={ramen} alt="Ramen illustration" />
+          <Text>
+            <h2>About Tokyo</h2>
+            <p>
+              With its futuristic skyscrapers, unrivaled food scene, and wild
+              nightlife, Tokyo is a rush of pure adrenaline. This vast and
+              multifaceted city is famously cutting edge, yet its ancient
+              Buddhist temples, vintage teahouses, and peaceful gardens offer a
+              serene escape — and a poignant reminder of the city’s long
+              history. And for those who know where to look, Tokyo’s smaller
+              pleasures (secret ramen spots, shopping alleys, chill record bars)
+              are often hiding in plain sight.
+            </p>
+          </Text>
+        </Container>
+        {userSigned ? (
+          <ImageForm
+            selectedImage={selectedImage}
+            setSelectedImage={setSelectedImage}
+            imageInput={imageInput}
+            setImageInput={setImageInput}
+            uploadImage={uploadImage}
+            successMsg={successMsg}
+            previewImage={previewImage}
+            setPreviewImage={setPreviewImage}
           />
-          <button type="submit">Submit</button>
-        </form> */}
-        <ImageForm
-          selectedImage={selectedImage}
-          setSelectedImage={setSelectedImage}
-          imageInput={imageInput}
-          setImageInput={setImageInput}
-          uploadImage={uploadImage}
-        />
-      </Container>
-      <Gallery>
-        {console.log("images", images)}
-        {images &&
-          images.map((image, index) => (
-            <Image
-              key={index}
-              cloudName="dec2frnoe"
-              publicId={image}
-              width="300"
-            />
-          ))}
-      </Gallery>
+        ) : (
+          <div style={{ color: "red" }}>Log-in to contribute</div>
+        )}
+        <div>
+          {/* {console.log("images", images)} */}
+          {images &&
+            images.map((image, index) => (
+              <Image
+                key={index}
+                cloudName="dec2frnoe"
+                publicId={image}
+                width="350"
+                height="250"
+                onClick={() => setModalImage(image)}
+              />
+            ))}
+        </div>
+        {modalImage && (
+          <Modal modalImage={modalImage} setModalImage={setModalImage} />
+        )}
+        <MapContainer>
+          <Div>
+            <h3>Want to go there?</h3>
+            <p>
+              Interact with the map to find the location of some of the
+              photographs.{" "}
+            </p>
+            <img src={location} alt="Map illustration" />
+          </Div>
+          <MapTokyo />
+        </MapContainer>
+      </Wrapper>
     </>
   );
 };
@@ -140,23 +141,80 @@ const H1 = styled.h1`
   color: white;
   font-size: 80px;
 `;
-const Container = styled.div`
+const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 80px;
+  padding: 60px;
   text-align: center;
   color: white;
   font-size: 18px;
 `;
-const Gallery = styled.div`
-  height: 100vh;
-  padding: 20px;
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(4, 1fr);
-  /* grid-template-rows: auto; */
+const Container = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  height: 70vh;
+`;
+const Img = styled.img`
+  width: 35%;
+  height: 65%;
+  align-self: center;
+`;
+const Text = styled.div`
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.8;
+  overflow: auto;
+
+  h2 {
+    margin-top: 40px;
+    font-size: 2em;
+    letter-spacing: 0.2rem;
+  }
+
+  p {
+    text-align: left;
+    margin-top: 10px;
+    letter-spacing: 1.5px;
+    font-size: 0.9em;
+  }
+`;
+const MapContainer = styled.div`
+  display: flex;
+  margin-top: 30px;
+  width: 100%;
+  height: 60vh;
+  align-items: center;
+  justify-content: space-evenly;
+`;
+const Div = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  height: 80%;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.8;
+
+  h3 {
+    font-size: 1em;
+    letter-spacing: 0.1rem;
+    font-weight: 700;
+  }
+
+  p {
+    margin-top: 10px;
+    letter-spacing: 1.5px;
+    font-size: 0.6em;
+  }
+
+  img {
+    width: 50%;
+    margin-top: 15px;
+  }
 `;
 
 export default Tokyo;
