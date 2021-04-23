@@ -7,8 +7,8 @@ const getBarcelona = async (req, res) => {
     .max_results(30)
     .execute();
 
-  const publicIds = resources.map((file) => file.public_id);
-  res.send(publicIds);
+  const url = resources.map((file) => file.url);
+  res.send(url);
 };
 
 const getMontreal = async (req, res) => {
@@ -17,8 +17,10 @@ const getMontreal = async (req, res) => {
     .max_results(30)
     .execute();
 
-  const publicIds = resources.map((file) => file.public_id);
-  res.send(publicIds);
+  // console.log("******", resources);
+  // const publicIds = resources.map((file) => file.public_id);
+  const url = resources.map((file) => file.url);
+  res.send(url);
 };
 
 const getTokyo = async (req, res) => {
@@ -26,9 +28,9 @@ const getTokyo = async (req, res) => {
     .expression("folder:cities_images && tags:tokyo")
     .max_results(30)
     .execute();
-  console.log("******", resources);
-  const publicIds = resources.map((file) => file.public_id);
-  res.send(publicIds);
+
+  const url = resources.map((file) => file.url);
+  res.send(url);
 };
 
 const getToronto = async (req, res) => {
@@ -37,8 +39,8 @@ const getToronto = async (req, res) => {
     .max_results(30)
     .execute();
 
-  const publicIds = resources.map((file) => file.public_id);
-  res.send(publicIds);
+  const url = resources.map((file) => file.url);
+  res.send(url);
 };
 
 const postBarcelona = async (req, res) => {
