@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { UserContext } from "../UserContext";
 import { Image } from "cloudinary-react";
+import { motion } from "framer-motion";
 import ImageForm from "./ImageForm";
 import MapTokyo from "../maps/MapTokyo";
 import Modal from "./Modal";
@@ -61,7 +63,13 @@ const Tokyo = () => {
   return (
     <>
       <Banner>
-        <H1>Tokyo</H1>
+        <motion.h1
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 2 }}
+        >
+          こんにちは, Tokyo
+        </motion.h1>
       </Banner>
       <Wrapper>
         <Container>
@@ -92,7 +100,10 @@ const Tokyo = () => {
             setPreviewImage={setPreviewImage}
           />
         ) : (
-          <div style={{ color: "red" }}>Log-in to contribute</div>
+          <User>
+            <LinkTo to="/login"> Sign-in</LinkTo> or{" "}
+            <LinkTo to="/signup">create an account</LinkTo> to upload photo.
+          </User>
         )}
         <div>
           {/* {console.log("images", images)} */}
@@ -136,11 +147,22 @@ const Banner = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  h1 {
+    color: white;
+    font-size: 80px;
+    font-weight: 600;
+  }
 `;
-const H1 = styled.h1`
+const User = styled.div`
+  margin-bottom: 25px;
+`;
+const LinkTo = styled(Link)`
+  text-decoration: underline;
   color: white;
-  font-size: 80px;
+  cursor: pointer;
 `;
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;

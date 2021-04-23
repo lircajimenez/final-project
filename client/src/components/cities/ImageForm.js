@@ -142,6 +142,7 @@ const Form = styled.form`
 const Div = styled.div`
   height: 40px;
   font-size: 0.8rem;
+  margin-top: 20px;
 `;
 const Msg = styled.div`
   color: green;

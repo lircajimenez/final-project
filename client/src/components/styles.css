@@ -1,3 +1,68 @@
+/* landing */
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* height: 100vh; */
+  line-height: 1.8;
+}
+
+.sub-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.shade1 {
+  /* color: #b0b8bf; */
+  /* color: #3537ac; */
+  color: #f0d6ff;
+}
+.shade2 {
+  /* color: #bcc2c8; */
+  /* color: #3a3cbb; */
+  color: #e9c2ff;
+}
+.shade3 {
+  /* color: #c7ccd1; */
+  /* color: #4446c5; */
+  color: #e1adff;
+}
+.shade4 {
+  /* color: #d2d6da; */
+  /* color: #5355ca; */
+  color: #da99ff;
+}
+.shade5 {
+  /* color: #dde0e3; */
+  /* color: #6365cf; */
+  color: #d285ff;
+}
+.shade6 {
+  /* color: #e9ebed; */
+  /* color: #7374d4; */
+  color: #cb70ff;
+}
+.shade7 {
+  /* color: #f4f5f6; */
+  /* color: #8284d9; */
+  color: #c35cff;
+}
+.shade8 {
+  /* color: #ffffff; */
+  /* color: #9293dd; */
+  color: #bc47ff;
+}
+
 .submit-btn {
   height: 40px;
   width: 150px;
