@@ -155,7 +155,7 @@ const User = styled.div`
 `;
 const LinkTo = styled(Link)`
   text-decoration: underline;
-  color: white;
+  /* color: white; */
   cursor: pointer;
 `;
 const Wrapper = styled.div`
@@ -165,7 +165,7 @@ const Wrapper = styled.div`
   justify-content: center;
   padding: 60px;
   text-align: center;
-  color: white;
+  /* color: white; */
   font-size: 18px;
 `;
 const Container = styled.div`

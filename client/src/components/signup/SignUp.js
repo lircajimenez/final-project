@@ -132,7 +132,7 @@ const Wrapper = styled.div`
   /* flex-direction: column; */
   align-items: center;
   justify-content: space-evenly;
-  color: white;
+  /* color: white; */
   height: 90vh;
   line-height: 1.5;
   /* border: 1px solid red; */

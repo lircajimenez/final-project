@@ -96,7 +96,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: white;
+  /* color: white; */
   height: 100%;
   line-height: 1.5;
   margin-top: 40px;
