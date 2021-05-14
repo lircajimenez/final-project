@@ -3,12 +3,15 @@ import styled from "styled-components";
 import { NavLink, useHistory } from "react-router-dom";
 import { FaUserCircle, FiLogOut } from "react-icons/all";
 import { UserContext } from "./UserContext";
+import { useDarkMode } from "./styles/useDarkMode";
+import { Toggle } from "./styles/Toggle";
 
-const Header = () => {
+const Header = ({ theme, toggleTheme }) => {
   const { userSigned, setUserSigned, currentUser, setCurrentUser } = useContext(
     UserContext
   );
   const history = useHistory();
+  // const [theme, toggleTheme] = useDarkMode();
 
   const signOut = () => {
     setUserSigned(false);
@@ -18,7 +21,7 @@ const Header = () => {
   // console.log("********", currentUser);
   return (
     <Nav>
-      {/* <h1>wandergram</h1> */}
+      <Toggle theme={theme} toggleTheme={toggleTheme} />
       <Wrapper>
         <Links>
           <NavLinkTo exact to="/">
@@ -47,18 +50,13 @@ const Nav = styled.nav`
   display: flex;
   width: 100vw;
   height: 70px;
-  background: black;
+  /* background: black; */
   padding: var(--page-horizontal-padding);
-
-  h1 {
-    color: var(--primary-color);
-    font-size: 2em;
-  }
 `;
 const Wrapper = styled.div`
   display: flex;
   justify-content: flex-end;
-  color: white;
+  /* color: white; */
   width: 100%;
 `;
 const Links = styled.div`
@@ -70,19 +68,21 @@ const Links = styled.div`
   /* border: 1px solid red; */
 `;
 const NavLinkTo = styled(NavLink)`
-  color: white;
+  /* color: white; */
+  color: ${(props) => props.theme.text};
   text-decoration: none;
   cursor: pointer;
 
-  &.active {
+  /* &.active {
     color: var(--accent-color);
-  }
+  } */
 `;
 const SignIn = styled(NavLink)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: white;
+  /* color: white; */
+  color: ${(props) => props.theme.text};
   text-decoration: none;
   cursor: pointer;
   /* border: 1px solid red; */
@@ -95,7 +95,7 @@ const Div = styled.div`
   justify-content: space-between;
 `;
 const Button = styled.button`
-  color: white;
+  /* color: white; */
   cursor: pointer;
   border: none;
   background: black;

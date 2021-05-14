@@ -1,6 +1,18 @@
 import { createGlobalStyle } from "styled-components";
 
-export default createGlobalStyle`
+export const lightTheme = {
+  //   body: "red",
+  body: "#f1faee",
+  text: "#000000",
+};
+
+export const darkTheme = {
+  //   body: "green",
+  body: "#000000",
+  text: "#f1faee",
+};
+
+export const GlobalStyles = createGlobalStyle`
     :root {
       /* --primary-color: #4accd9; */
       --primary-color: #F8961E;
@@ -12,6 +24,14 @@ export default createGlobalStyle`
       /* --heading-font-family: 'Teko', sans-serif; */
       --user-img-width: 120px;
     }
+
+    /* toggle light/dark theme */
+    body {
+        background: ${(props) => props.theme.body};
+        color: ${(props) => props.theme.text};
+        transition: all .5s linear;
+    }
+
     html, body, div, span, applet, object, iframe,
     h1, h2, h3, h4, h5, h6, p, blockquote, pre,
     a, abbr, acronym, address, big, cite, code,
@@ -52,9 +72,9 @@ export default createGlobalStyle`
         content: '';
         content: none;
     }
-    html {
+    /* html {
         background: black;
-    }
+    } */
     /* h1, h2, h3 {
       color: var(--primary-color);
       font-family: var(--heading-font-family);
