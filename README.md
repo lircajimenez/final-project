@@ -7,3 +7,7 @@ Wandergram is a web app that allows the user to explore a city through beautiful
 **Backend:** Express, Node.js, MongoDB, Cloudinary 
 
 ![Alt Text](https://media.giphy.com/media/t8WlO3M7OMfCS4wILX/giphy.gif)
+
+![Alt Text](https://media.giphy.com/media/bCKcSmprMdh1uKCmC7/giphy.gif)
+
+![Alt Text](https://media.giphy.com/media/ADZQpwejEUGOrcUjIr/giphy.gif)
